@@ -1,0 +1,25 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Modal Content</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+  <form [formGroup]="todoGroup" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label>Name</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Description</ion-label>
+      <ion-textarea formControlName="description"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label>Done</ion-label>
+      <ion-checkbox formControlName="isDone"></ion-checkbox>
+    </ion-item>
+    <ion-button type="submit" expand="block" [disabled]="!todoGroup.valid">Create todo</ion-button>
+  </form>
+</ion-content>

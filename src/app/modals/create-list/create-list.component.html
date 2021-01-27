@@ -1,0 +1,17 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Modal Content</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+  <form [formGroup]="listGroup" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label>Name</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-button type="submit" expand="block" [disabled]="!listGroup.valid">Create list</ion-button>
+  </form>
+</ion-content>
