@@ -41,8 +41,7 @@ export class ListDetailsPage implements OnInit {
   }
 
   removeTodo(todo: Todo): void {
-    this.list.removeTodo(todo);
-    this.listService.saveList(this.list);
+    this.listService.removeTodo(todo, this.list.getId());
   }
 
 }

@@ -33,8 +33,7 @@ export class CreateTodoComponent implements OnInit {
   onSubmit() {
     if(this.todoGroup.valid){
       const todo = new Todo(this.todoGroup.value['name'], this.todoGroup.value['description'], this.todoGroup.value['isDone']);
-      this.list.addTodo(todo);
-      this.listService.saveList(this.list);
+      this.listService.addTodo(todo, this.list.getId());
       this.modalController.dismiss();
     }
   }

@@ -25,12 +25,11 @@ export class ListService {
     this.lists.push(new List(name));
   }
 
-  public saveList(list: List): void {
-    console.log(this.lists);
-    console.log(list);
-    const index = this.lists.findIndex(list => list.getId() === list.getId());
-    console.log(index);
-    if(index >= 0)
-      this.lists[index] = list;
+  public addTodo(todo: Todo, listId: string): void {
+    this.getOne(listId).addTodo(todo);
+  }
+
+  public removeTodo(todo: Todo, listId: string): void {
+    this.getOne(listId).removeTodo(todo);
   }
 }
