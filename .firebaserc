@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "projet-mobile-507d7": {
+      "hosting": {
+        "app": [
+          "projet-mobile-507d7"
+        ]
+      }
+    }
+  }
+}
