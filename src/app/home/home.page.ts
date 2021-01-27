@@ -30,4 +30,8 @@ export class HomePage implements OnInit {
     });
     return await modal.present();
   }
+
+  removeList(list: List): void {
+    this.listService.delete(list);
+  }
 }

@@ -25,6 +25,10 @@ export class ListService {
     this.lists.push(new List(name));
   }
 
+  public delete(list: List): void {
+    this.lists.splice(this.lists.indexOf(list), 1);
+  }
+
   public addTodo(todo: Todo, listId: string): void {
     this.getOne(listId).addTodo(todo);
   }
