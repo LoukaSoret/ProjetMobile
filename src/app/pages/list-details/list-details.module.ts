@@ -13,13 +13,10 @@ import { CreateTodoComponent } from 'src/app/modals/create-todo/create-todo.comp
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
-    ListDetailsPageRoutingModule,
-    ReactiveFormsModule
+    ListDetailsPageRoutingModule
   ],
-  declarations: [
-    ListDetailsPage,
-    CreateTodoComponent
-  ]
+  declarations: [ListDetailsPage, CreateTodoComponent]
 })
 export class ListDetailsPageModule {}

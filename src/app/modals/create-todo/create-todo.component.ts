@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ListService } from 'src/app/services/list.service';
 import { ModalController } from '@ionic/angular';
 import { Todo } from 'src/app/models/todo';
-import { List } from 'src/app/models/list';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-create-todo',
@@ -11,34 +11,32 @@ import { List } from 'src/app/models/list';
   styleUrls: ['./create-todo.component.scss'],
 })
 export class CreateTodoComponent implements OnInit {
+  @Input() listId: string;
 
-  @Input()
-  private list: List;
-  private todoGroup: FormGroup;
+  private newTodoForm: FormGroup;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private listService: ListService,
-    private modalController: ModalController
-  ) {
-    this.todoGroup = this.formBuilder.group({
-      name: ['', Validators.required],
-      description: [''],
-      isDone: [''],
-    });
-  }
+  constructor(private listService: ListService, private formBuilder: FormBuilder, private modalController: ModalController) { }
 
-  ngOnInit() {}
-
-  onSubmit() {
-    if(this.todoGroup.valid){
-      const todo = new Todo(this.todoGroup.value['name'], this.todoGroup.value['description'], this.todoGroup.value['isDone']);
-      this.listService.addTodo(todo, this.list.getId());
-      this.modalController.dismiss();
-    }
+ngOnInit(){
+    this.newTodoForm = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      description: ['', [Validators.maxLength(255)]],
+   })
   }
 
   dismissModal() {
-    this.modalController.dismiss();
+      this.modalController.dismiss(); 
   }
+
+  createNewTodo(){
+    if(this.newTodoForm.valid){
+      this.listService.addTodo(new Todo(this.newTodoForm.get('name').value, this.newTodoForm.get('description').value), this.listId);
+      this.dismissModal();
+    }
+  }
+
+  get errorControl() {
+    return this.newTodoForm.controls;
+  }
+
 }

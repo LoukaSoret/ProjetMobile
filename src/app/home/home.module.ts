@@ -14,11 +14,9 @@ import { CreateListComponent } from '../modals/create-list/create-list.component
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
+    FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [
-    HomePage,
-    CreateListComponent,
-  ]
+  declarations: [HomePage, CreateListComponent]
 })
 export class HomePageModule {}
