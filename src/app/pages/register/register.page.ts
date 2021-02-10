@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +12,7 @@ export class RegisterPage implements OnInit {
 
   registerForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, public auth: AngularFireAuth) { }
+  constructor(private formBuilder: FormBuilder, public auth: AngularFireAuth, public router: Router) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -24,8 +25,12 @@ export class RegisterPage implements OnInit {
     if(this.registerForm.valid){
       this.auth.createUserWithEmailAndPassword(
         this.registerForm.get('email').value, this.registerForm.get('password').value)
-      .then()
-      .catch();
+      .then(() => {
+        this.router.navigate(['/home']);
+      })
+      .catch(() => {
+        console.log('Register error');
+      });
     }
   }
 

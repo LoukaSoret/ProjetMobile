@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ export class LoginPage implements OnInit {
 
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, public auth: AngularFireAuth) { }
+  constructor(private formBuilder: FormBuilder, public auth: AngularFireAuth, public router: Router) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -24,8 +25,12 @@ export class LoginPage implements OnInit {
     if(this.loginForm.valid){
       this.auth.signInWithEmailAndPassword(
         this.loginForm.get('email').value, this.loginForm.get('password').value)
-      .then()
-      .catch();
+        .then(() => {
+          this.router.navigate(['/home']);
+        })
+        .catch(() => {
+          console.log('Log in error');
+        });
     }
   }
 
