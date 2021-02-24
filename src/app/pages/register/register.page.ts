@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,7 @@ export class RegisterPage implements OnInit {
 
   registerForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, public auth: AngularFireAuth, public router: Router) { }
+  constructor(private formBuilder: FormBuilder, public auth: AngularFireAuth, public router: Router, public toastController: ToastController) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -28,10 +29,18 @@ export class RegisterPage implements OnInit {
       .then(() => {
         this.router.navigate(['/home']);
       })
-      .catch(() => {
-        console.log('Register error');
+      .catch(error => {
+        this.errorToast(error);
       });
     }
+  }
+
+  async errorToast(errorMessage: string) {
+    const toast = await this.toastController.create({
+      message: errorMessage,
+      duration: 10000
+    });
+    toast.present();
   }
 
   get errorControl() {
