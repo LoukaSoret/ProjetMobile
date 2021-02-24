@@ -39,12 +39,20 @@
         <ion-button [disabled]="loginForm.invalid" type="submit" color="primary" expand="block">Log in</ion-button>
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="loginWithGoogle()" expand="block">
+          <ion-icon slot="start" name="logo-google"></ion-icon>
+          Log In with Google
+        </ion-button>
+      </ion-col>
+    </ion-row>
   </form>
-  <a  [routerLink]="['/register']">
+  <a  [routerLink]="['/register']" >
     <span>Create a new account</span>
   </a>
-  <ion-button (click)="loginWithGoogle()">
-    <ion-icon slot="start" name="logo-google"></ion-icon>
-    LogIn with Google
-  </ion-button>
+  <br/>
+  <a  [routerLink]="['/password-recovery']">
+    <span>Forgot your password?</span>
+  </a>
 </ion-content>
