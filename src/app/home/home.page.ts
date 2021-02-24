@@ -4,6 +4,7 @@ import { ListService } from '../services/list.service';
 import { ModalController } from '@ionic/angular';
 import { CreateListComponent } from '../modals/create-list/create-list.component';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -11,11 +12,9 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  private lists: List[];
+  private lists: Observable<List[]>;
 
-  constructor(private listService: ListService, public modalController: ModalController) {
-    this.lists = [];
-  }
+  constructor(private listService: ListService, public modalController: ModalController) {}
 
   ngOnInit(){
     this.lists = this.listService.getAll();

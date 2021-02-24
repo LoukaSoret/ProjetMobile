@@ -4,6 +4,7 @@ import { CreateTodoComponent } from 'src/app/modals/create-todo/create-todo.comp
 import { ListService } from 'src/app/services/list.service';
 import { List } from 'src/app/models/list';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-list-details',
@@ -11,14 +12,14 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./list-details.page.scss'],
 })
 export class ListDetailsPage implements OnInit {
-  private list: List;
+  private list: Observable<List>;
 
   constructor(private listService: ListService, private modalController: ModalController, private route: ActivatedRoute) {
    }
 
   ngOnInit() {
-  const listId = this.route.snapshot.paramMap.get('listId');
-  this.list = this.listService.getOne(listId)
+    const listId = this.route.snapshot.paramMap.get('listId');
+    this.list = this.listService.getOne(listId)
   }
 
   async openCreateModal(){

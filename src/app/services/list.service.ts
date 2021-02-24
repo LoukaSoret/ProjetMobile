@@ -1,39 +1,62 @@
 import { Injectable } from '@angular/core';
 import { List } from '../models/list';
 import { Todo } from '../models/todo';
+import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
+import { map, switchMap } from 'rxjs/operators'
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListService {
-  public lists: List[];
+  private listCollection: AngularFirestoreCollection<List>
 
-  constructor() { 
-    this.lists = [];
+  constructor(private firestore: AngularFirestore) { 
+    this.listCollection = this.firestore.collection('lists');
   }
 
-  getAll(){
-    return this.lists;
+  getAll(): Observable<List[]>{
+    return this.listCollection.snapshotChanges()
+    .pipe(
+      map(data => this.convertSnapshotData(data))
+    );
   }
 
-  getOne(id: string){
-    return Object.assign({}, this.lists.find(l => l.id === id));
+  getOne(id: string): Observable<List>{
+    return this.listCollection.doc<List>(id).valueChanges()
+    .pipe(
+      switchMap(
+        list => this.listCollection.doc(id).collection<Todo>('todos').snapshotChanges()
+        .pipe(
+          map(data => {
+            list.todos = this.convertSnapshotData<Todo>(data);
+            return list;
+          })
+        )
+      )
+    )
   }
 
-  create(list: List){
-    this.lists.push(list);
+  create(list: List): void{
+    this.listCollection.add(list);
   }
 
-  addTodo(todo: Todo, listId: string){
-    this.getOne(listId).todos.push(todo);
+  addTodo(todo: Todo, listId: string): void{
+    this.listCollection.doc<List>(listId).collection<Todo>('todos').add(todo);
   }
 
-  deleteTodo(todo: Todo, listId: string){
-    const list = this.getOne(listId);
-    list.todos.splice(list.todos.indexOf(todo), 1);
+  deleteTodo(todo: Todo, listId: string): void{
+    this.listCollection.doc<List>(listId).collection<Todo>('todos').doc<List>(todo.id).delete();
   }
 
-  delete(list){
-    this.lists.splice(this.lists.indexOf(list), 1);
+  delete(list: List): void{
+    this.listCollection.doc<List>(list.id).delete();
+  }
+
+  private convertSnapshotData<T>(ssData) {
+    return ssData.map(d => {
+      const id = d.payload.doc.id
+      return { id, ...d.payload.doc.data() } as T;
+    })
   }
 }
