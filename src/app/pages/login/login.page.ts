@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import '@codetrix-studio/capacitor-google-auth';
 import { Plugins } from '@capacitor/core';
 import firebase from 'firebase';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginPage implements OnInit {
 
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, public auth: AngularFireAuth, public router: Router) { }
+  constructor(private formBuilder: FormBuilder, public auth: AngularFireAuth, public router: Router, public toastController: ToastController) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -31,8 +32,8 @@ export class LoginPage implements OnInit {
         .then(() => {
           this.router.navigate(['/home']);
         })
-        .catch(() => {
-          console.log('Log in error');
+        .catch(error => {
+          this.errorToast(error);
         });
     }
   }
@@ -46,6 +47,14 @@ export class LoginPage implements OnInit {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  async errorToast(errorMessage: string) {
+    const toast = await this.toastController.create({
+      message: errorMessage,
+      duration: 10000
+    });
+    toast.present();
   }
 
   get errorControl() {
