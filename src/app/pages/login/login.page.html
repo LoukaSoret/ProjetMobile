@@ -7,7 +7,7 @@
 <ion-content>
   <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
     <ion-item>
-      <ion-label position="floating">Email address</ion-label>
+      <ion-label position="floating"><ion-icon name="person-outline"></ion-icon> Email address</ion-label>
       <ion-input type="text" name="email" formControlName="email" required></ion-input>
     </ion-item>
     <ion-text color="danger" *ngIf="errorControl.email.touched && errorControl.email.errors?.required">
@@ -21,7 +21,7 @@
       </span>
     </ion-text>
     <ion-item>
-      <ion-label position="floating">Password</ion-label>
+      <ion-label position="floating"><ion-icon name="key-outline"></ion-icon> Password</ion-label>
       <ion-input type="password" name="password" formControlName="password" required></ion-input>
     </ion-item>
     <ion-text color="danger" *ngIf="errorControl.password.touched && errorControl.password.errors?.required">
@@ -39,20 +39,22 @@
         <ion-button [disabled]="loginForm.invalid" type="submit" color="primary" expand="block">Log in</ion-button>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-button (click)="loginWithGoogle()" expand="block">
-          <ion-icon slot="start" name="logo-google"></ion-icon>
-          Log In with Google
-        </ion-button>
-      </ion-col>
-    </ion-row>
   </form>
-  <a  [routerLink]="['/register']" >
-    <span>Create a new account</span>
-  </a>
-  <br/>
-  <a  [routerLink]="['/password-recovery']">
-    <span>Forgot your password?</span>
-  </a>
+  <ion-row>
+    <ion-col>
+      <ion-button (click)="loginWithGoogle()" expand="block">
+        <ion-icon slot="start" name="logo-google"></ion-icon>
+        Log In with Google
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <div class="ion-text-center">
+    <a  [routerLink]="['/register']">
+      <span>Create a new account</span>
+    </a>
+    <br/>
+    <a  [routerLink]="['/password-recovery']">
+      <span>Forgot your password?</span>
+    </a> 
+  </div>  
 </ion-content>
