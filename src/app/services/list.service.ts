@@ -18,16 +18,16 @@ export class ListService {
   getAll(): Observable<List[]>{
     return this.listCollection.snapshotChanges()
     .pipe(
-      map(data => this.convertSnapshotData<List>(data)),
-      tap(console.log)
+      map(data => this.convertSnapshotData<List>(data))
     );
   }
 
   getOne(id: string): Observable<List>{
+    console.log(id)
     return this.listCollection.doc<List>(id).valueChanges()
     .pipe(
       switchMap(
-        list => this.listCollection.doc(id).collection<Todo>('todos').snapshotChanges()
+        list => this.listCollection.doc<List>(id).collection<Todo>('todos').snapshotChanges()
         .pipe(
           map(data => {
             list.todos = this.convertSnapshotData<Todo>(data);
@@ -47,11 +47,11 @@ export class ListService {
   }
 
   addTodo(todo: Todo, listId: string): void{
-    this.listCollection.doc<List>(listId).collection<Todo>('todos').add(todo);
+    this.listCollection.doc<List>(listId).collection<Todo>('todos').add(Object.assign({}, todo));
   }
 
   deleteTodo(todo: Todo, listId: string): void{
-    this.listCollection.doc<List>(listId).collection<Todo>('todos').doc<List>(todo.id).delete();
+    this.listCollection.doc<List>(listId).collection<Todo>('todos').doc<Todo>(todo.id).delete();
   }
 
   delete(list: List): void{
