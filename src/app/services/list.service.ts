@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { List } from '../models/list';
 import { Todo } from '../models/todo';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
-import { map, switchMap } from 'rxjs/operators'
+import { map, switchMap, tap } from 'rxjs/operators'
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,13 +12,14 @@ export class ListService {
   private listCollection: AngularFirestoreCollection<List>
 
   constructor(private firestore: AngularFirestore) { 
-    this.listCollection = this.firestore.collection('lists');
+    this.listCollection = this.firestore.collection<List>('lists');
   }
 
   getAll(): Observable<List[]>{
     return this.listCollection.snapshotChanges()
     .pipe(
-      map(data => this.convertSnapshotData(data))
+      map(data => this.convertSnapshotData<List>(data)),
+      tap(console.log)
     );
   }
 

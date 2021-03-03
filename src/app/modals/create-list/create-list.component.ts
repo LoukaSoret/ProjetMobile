@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ListService } from 'src/app/services/list.service';
 import { List } from 'src/app/models/list';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-create-list',
@@ -14,7 +15,7 @@ export class CreateListComponent implements OnInit {
   newListForm: FormGroup;
 
   constructor(private modalController: ModalController, private formBuilder: FormBuilder,
-    private listService: ListService) {
+    private listService: ListService, private firebaseAuth: AngularFireAuth) {
    
   }
 
@@ -30,8 +31,11 @@ export class CreateListComponent implements OnInit {
 
   createNewList(){
     if(this.newListForm.valid){
-      this.listService.create(new List(this.newListForm.get('name').value));
-      this.dismissModal();
+      this.firebaseAuth.currentUser
+      .then(user => {
+        this.listService.create(new List(this.newListForm.get('name').value, user.email));
+        this.dismissModal();
+      });
     }
   }
 
