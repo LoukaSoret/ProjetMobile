@@ -38,8 +38,12 @@ export class ListService {
     )
   }
 
-  create(list: List): void{
-    this.listCollection.add(list);
+  create(list: List): void {
+    this.firestore.collection('lists').add(Object.assign({},{
+      name: list.name,
+      canRead: list.canRead,
+      canWrite: list.canWrite,
+      owner: list.owner}));
   }
 
   addTodo(todo: Todo, listId: string): void{
