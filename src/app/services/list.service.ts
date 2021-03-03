@@ -43,7 +43,7 @@ export class ListService {
   }
 
   addTodo(todo: Todo, listId: string): void{
-    this.listCollection.doc<List>(listId).collection<Todo>('todos').add(todo);
+    this.listCollection.doc<List>(listId).collection<Todo>('todos').add(Object.assign({}, todo));
   }
 
   deleteTodo(todo: Todo, listId: string): void{
