@@ -11,7 +11,7 @@
   <ion-reorder-group disabled="false">
     <!-- Sliding item with text options on both sides -->
     <ion-item-sliding *ngFor="let todo of (list | async)?.todos">
-      <ion-item detail="true" [routerLink]="['/todo-details/' + (list | async)?.id + '/' + todo.id]" [state]=todo>
+      <ion-item detail="true" [routerLink]="['/todo-details/' + listId + '/' + todo.id]" [state]=todo>
         <ion-checkbox slot="start" [(ngModel)]="todo.isDone"></ion-checkbox>
         <ion-label>{{ todo.name }}</ion-label>
         <ion-reorder slot="end"></ion-reorder>

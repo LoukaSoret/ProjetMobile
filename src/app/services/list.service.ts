@@ -49,7 +49,7 @@ export class ListService {
   }
 
   getTodo(listId: string, todoId: string): Observable<Todo>{
-    return this.listCollection.doc<List>(listId).collection<Todo>('todos', ref => ref.where('canRead', 'array-contains', this.firebase.auth().currentUser.email)).doc<Todo>(todoId).valueChanges()
+    return this.listCollection.doc<List>(listId).collection<Todo>('todos').doc<Todo>(todoId).valueChanges()
     .pipe(
       tap(console.log)
     )

@@ -19,7 +19,7 @@ export class TodoDetailsPage implements OnInit {
     if(this.router.getCurrentNavigation().extras.state){
       this.todo = of(this.router.getCurrentNavigation().extras.state as Todo);
     }else{
-      this.todo = this.listService.getTodo(this.route.snapshot.params.get('listId'), this.route.snapshot.params.get('todoId'));
+      this.todo = this.listService.getTodo(this.route.snapshot.paramMap.get('listId'), this.route.snapshot.paramMap.get('todoId'));
     }  
   }
 }
