@@ -3,16 +3,19 @@ import { List } from '../models/list';
 import { Todo } from '../models/todo';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { map, switchMap, tap } from 'rxjs/operators'
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { FirebaseApp } from '@angular/fire';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListService {
-  private listCollection: AngularFirestoreCollection<List>
+  private listCollection: AngularFirestoreCollection<List>;
 
-  constructor(private firestore: AngularFirestore) { 
-    this.listCollection = this.firestore.collection<List>('lists');
+  constructor(private firestore: AngularFirestore, private firebase: FirebaseApp) {
+      this.listCollection = this.firestore.collection<List>('lists', ref => ref.where('canRead', 'array-contains', this.firebase.auth().currentUser.email)
+   );
   }
 
   getAll(): Observable<List[]>{
@@ -23,7 +26,6 @@ export class ListService {
   }
 
   getOne(id: string): Observable<List>{
-    console.log(id)
     return this.listCollection.doc<List>(id).valueChanges()
     .pipe(
       switchMap(
@@ -44,6 +46,13 @@ export class ListService {
       canRead: list.canRead,
       canWrite: list.canWrite,
       owner: list.owner}));
+  }
+
+  getTodo(listId: string, todoId: string): Observable<Todo>{
+    return this.listCollection.doc<List>(listId).collection<Todo>('todos', ref => ref.where('canRead', 'array-contains', this.firebase.auth().currentUser.email)).doc<Todo>(todoId).valueChanges()
+    .pipe(
+      tap(console.log)
+    )
   }
 
   addTodo(todo: Todo, listId: string): void{
