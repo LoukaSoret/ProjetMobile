@@ -11,25 +11,26 @@ import { FirebaseApp } from '@angular/fire';
   providedIn: 'root'
 })
 export class ListService {
-  private listCollection: AngularFirestoreCollection<List>;
+  private readListCollection: AngularFirestoreCollection<List>;
+  private writeListCollection: AngularFirestoreCollection<List>;
 
   constructor(private firestore: AngularFirestore, private firebase: FirebaseApp) {
-      this.listCollection = this.firestore.collection<List>('lists', ref => ref.where('canRead', 'array-contains', this.firebase.auth().currentUser.email)
-   );
+      this.readListCollection = this.firestore.collection<List>('lists', ref => ref.where('canRead', 'array-contains', this.firebase.auth().currentUser.email));
+      this.writeListCollection = this.firestore.collection<List>('lists', ref => ref.where('canWrite', 'array-contains', this.firebase.auth().currentUser.email));
   }
 
   getAll(): Observable<List[]>{
-    return this.listCollection.snapshotChanges()
+    return this.readListCollection.snapshotChanges()
     .pipe(
       map(data => this.convertSnapshotData<List>(data))
     );
   }
 
   getOne(id: string): Observable<List>{
-    return this.listCollection.doc<List>(id).valueChanges()
+    return this.readListCollection.doc<List>(id).valueChanges()
     .pipe(
       switchMap(
-        list => this.listCollection.doc<List>(id).collection<Todo>('todos').snapshotChanges()
+        list => this.readListCollection.doc<List>(id).collection<Todo>('todos').snapshotChanges()
         .pipe(
           map(data => {
             list.todos = this.convertSnapshotData<Todo>(data);
@@ -49,22 +50,22 @@ export class ListService {
   }
 
   getTodo(listId: string, todoId: string): Observable<Todo>{
-    return this.listCollection.doc<List>(listId).collection<Todo>('todos').doc<Todo>(todoId).valueChanges()
+    return this.readListCollection.doc<List>(listId).collection<Todo>('todos').doc<Todo>(todoId).valueChanges()
     .pipe(
       tap(console.log)
     )
   }
 
   addTodo(todo: Todo, listId: string): void{
-    this.listCollection.doc<List>(listId).collection<Todo>('todos').add(Object.assign({}, todo));
+    this.writeListCollection.doc<List>(listId).collection<Todo>('todos').add(Object.assign({}, todo));
   }
 
   deleteTodo(todo: Todo, listId: string): void{
-    this.listCollection.doc<List>(listId).collection<Todo>('todos').doc<Todo>(todo.id).delete();
+    this.writeListCollection.doc<List>(listId).collection<Todo>('todos').doc<Todo>(todo.id).delete();
   }
 
   delete(list: List): void{
-    this.listCollection.doc<List>(list.id).delete();
+    this.writeListCollection.doc<List>(list.id).delete();
   }
 
   private convertSnapshotData<T>(ssData) {
