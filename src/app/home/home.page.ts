@@ -3,6 +3,8 @@ import { List } from '../models/list';
 import { ListService } from '../services/list.service';
 import { ModalController } from '@ionic/angular';
 import { CreateListComponent } from '../modals/create-list/create-list.component';
+import { Observable } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {ShareListComponent} from '../modals/share-list/share-list.component';
@@ -15,7 +17,7 @@ import {ShareListComponent} from '../modals/share-list/share-list.component';
 export class HomePage implements OnInit {
   private lists: Observable<List[]>;
 
-  constructor(private listService: ListService, public modalController: ModalController) {}
+  constructor(private listService: ListService, private modalController: ModalController, private auth: AngularFireAuth, private router: Router) {}
 
   ngOnInit(){
     this.lists = this.listService.getAll();
@@ -38,4 +40,12 @@ export class HomePage implements OnInit {
       });
       return await modal.present();
     }
+
+  logout() {
+    this.auth.signOut().then(
+      () => {
+        this.router.navigate(['login']);
+      },
+    );
+  }
 }
