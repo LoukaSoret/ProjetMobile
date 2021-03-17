@@ -3,12 +3,17 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>{{(todo|async)?.name}}</ion-title>
+    <ion-title>Todo Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding-horizontal">
   <ion-text>
-    {{(todo|async)?.description}}
+    <h2>
+      {{(todo|async)?.name}}
+    </h2>
+    <p>
+      {{(todo|async)?.description}}
+    </p>    
   </ion-text>
 </ion-content>
