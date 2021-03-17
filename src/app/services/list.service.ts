@@ -4,7 +4,6 @@ import { Todo } from '../models/todo';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { map, switchMap, tap } from 'rxjs/operators'
 import { Observable, of } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { FirebaseApp } from '@angular/fire';
 
 @Injectable({
@@ -64,6 +63,10 @@ export class ListService {
 
   addTodo(todo: Todo, listId: string): void{
     this.writeListCollection.doc<List>(listId).collection<Todo>('todos').add(Object.assign({}, todo));
+  }
+
+  updateTodo(todo: Todo, listId: string): void{
+    this.writeListCollection.doc<List>(listId).collection<Todo>('todos').doc<Todo>(todo.id).set(Object.assign({}, todo));
   }
 
   deleteTodo(todo: Todo, listId: string): void{
