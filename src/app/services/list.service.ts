@@ -15,8 +15,10 @@ export class ListService {
   private writeListCollection: AngularFirestoreCollection<List>;
 
   constructor(private firestore: AngularFirestore, private firebase: FirebaseApp) {
-      this.readListCollection = this.firestore.collection<List>('lists', ref => ref.where('canRead', 'array-contains', this.firebase.auth().currentUser.email));
-      this.writeListCollection = this.firestore.collection<List>('lists', ref => ref.where('canWrite', 'array-contains', this.firebase.auth().currentUser.email));
+      this.readListCollection = this.firestore.collection<List>('lists',
+              ref => ref.where('canRead', 'array-contains', this.firebase.auth().currentUser.email));
+      this.writeListCollection = this.firestore.collection<List>('lists',
+              ref => ref.where('canWrite', 'array-contains', this.firebase.auth().currentUser.email));
   }
 
   getAll(): Observable<List[]>{
@@ -57,7 +59,7 @@ export class ListService {
     return this.readListCollection.doc<List>(listId).collection<Todo>('todos').doc<Todo>(todoId).valueChanges()
     .pipe(
       tap(console.log)
-    )
+    );
   }
 
   addTodo(todo: Todo, listId: string): void{
@@ -69,13 +71,13 @@ export class ListService {
   }
 
   delete(list: List): void{
-    this.writeListCollection.doc<List>(list.id).delete();
+    this.writeListCollection.doc<List>(list.id).delete(); // .delete();
   }
 
   private convertSnapshotData<T>(ssData) {
     return ssData.map(d => {
       const id = d.payload.doc.id
       return { id, ...d.payload.doc.data() } as T;
-    })
+    });
   }
 }
