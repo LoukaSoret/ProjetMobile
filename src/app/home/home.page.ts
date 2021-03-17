@@ -6,8 +6,7 @@ import { CreateListComponent } from '../modals/create-list/create-list.component
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import {ShareListComponent} from '../modals/share-list/share-list.component';
+import { ShareListComponent } from '../modals/share-list/share-list.component';
 
 @Component({
   selector: 'app-home',

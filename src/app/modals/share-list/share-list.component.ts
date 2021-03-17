@@ -12,14 +12,14 @@ import {AngularFireAuth} from '@angular/fire/auth';
 })
 export class ShareListComponent implements OnInit {
 
-  shareForm: FormGroup;
+  private shareForm: FormGroup;
 
   constructor(private modalController: ModalController, private formBuilder: FormBuilder,
               private listService: ListService, private firebaseAuth: AngularFireAuth) { }
 
   ngOnInit() {
     this.shareForm = this.formBuilder.group({
-      email: ['', [Validators.required]],
+      email: ['', [Validators.email, Validators.required]],
     });
   }
 
@@ -38,5 +38,9 @@ export class ShareListComponent implements OnInit {
           console.log('shared !');
           });
     }
+  }
+
+  debug() {
+    console.log(this.shareForm);
   }
 }

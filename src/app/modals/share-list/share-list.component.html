@@ -10,11 +10,16 @@
   <form [formGroup]="shareForm" (ngSubmit)="share()" novalidate>
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" name="email" formControlName="email" required></ion-input>
+      <ion-input type="email" name="email" formControlName="email"></ion-input>
     </ion-item>
     <ion-text color="danger" *ngIf="errorControl.email.touched && errorControl.email.errors?.required">
       <span>
         This field is required
+      </span>
+    </ion-text>
+    <ion-text color="danger" *ngIf="errorControl.email.touched && errorControl.email.errors?.email">
+      <span>
+        Please enter a valid email
       </span>
     </ion-text>
     <ion-row>
