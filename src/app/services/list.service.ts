@@ -38,15 +38,19 @@ export class ListService {
           })
         )
       )
-    )
+    );
   }
 
   create(list: List): void {
-    this.firestore.collection('lists').add(Object.assign({},{
-      name: list.name,
-      canRead: list.canRead,
-      canWrite: list.canWrite,
-      owner: list.owner}));
+    this.firestore.collection('lists',
+    ref => ref.where('canWrite', 'array-contains', this.firebase.auth().currentUser.email)).add(
+        Object.assign({}, {
+          name: list.name,
+          canRead: list.canRead,
+          canWrite: list.canWrite,
+          owner: list.owner
+        })
+    );
   }
 
   getTodo(listId: string, todoId: string): Observable<Todo>{
