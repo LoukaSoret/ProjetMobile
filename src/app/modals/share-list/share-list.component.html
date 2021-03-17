@@ -1,0 +1,27 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Modal Content</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+  <form [formGroup]="shareForm" (ngSubmit)="share()" novalidate>
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" name="email" formControlName="email" required></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="errorControl.email.touched && errorControl.email.errors?.required">
+      <span>
+        This field is required
+      </span>
+    </ion-text>
+    <ion-row>
+      <ion-col>
+        <ion-button [disabled]="shareForm.invalid" type="submit" color="primary" expand="block">Submit</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+</ion-content>

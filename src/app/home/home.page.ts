@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { CreateListComponent } from '../modals/create-list/create-list.component';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import {ShareListComponent} from '../modals/share-list/share-list.component';
 
 @Component({
   selector: 'app-home',
@@ -30,4 +31,11 @@ export class HomePage implements OnInit {
   async delete(list){
     this.listService.delete(list);
   }
+
+    async share(list: List) {
+      const modal = await this.modalController.create({
+        component: ShareListComponent,
+      });
+      return await modal.present();
+    }
 }
