@@ -36,6 +36,9 @@ export class HomePage implements OnInit {
     async share(list: List) {
       const modal = await this.modalController.create({
         component: ShareListComponent,
+        componentProps: {
+          list
+        }
       });
       return await modal.present();
     }

@@ -77,6 +77,13 @@ export class ListService {
     this.writeListCollection.doc<List>(list.id).delete(); // .delete();
   }
 
+  updateRights(list: List): Promise<void> {
+      return this.writeListCollection.doc<List>(list.id).update({
+          canRead: list.canRead,
+          canWrite: list.canWrite
+      });
+  }
+
   private convertSnapshotData<T>(ssData) {
     return ssData.map(d => {
       const id = d.payload.doc.id
