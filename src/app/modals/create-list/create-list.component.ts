@@ -15,8 +15,8 @@ export class CreateListComponent implements OnInit {
   newListForm: FormGroup;
 
   constructor(private modalController: ModalController, private formBuilder: FormBuilder,
-    private listService: ListService, private firebaseAuth: AngularFireAuth) {
-   
+              private listService: ListService, private firebaseAuth: AngularFireAuth) {
+
   }
 
   ngOnInit(){

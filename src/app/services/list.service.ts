@@ -73,8 +73,8 @@ export class ListService {
     this.writeListCollection.doc<List>(listId).collection<Todo>('todos').doc<Todo>(todo.id).delete();
   }
 
-  delete(list: List): void{
-    this.writeListCollection.doc<List>(list.id).delete(); // .delete();
+  delete(list: List): Promise<void> {
+    return this.writeListCollection.doc<List>(list.id).delete();
   }
 
   updateRights(list: List): Promise<void> {
