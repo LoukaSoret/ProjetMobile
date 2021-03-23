@@ -6,6 +6,7 @@ import { List } from 'src/app/models/list';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Todo } from 'src/app/models/todo';
+import { Plugins } from '@capacitor/core';
 
 @Component({
   selector: 'app-list-details',
@@ -46,5 +47,22 @@ export class ListDetailsPage implements OnInit {
 
   showDetails(todo: Todo) {
     this.router.navigate(['todo-details', this.listId, todo.id], {state: todo});
+  }
+
+  shareTodos() {
+    const { Share } = Plugins;
+    this.list.subscribe(list => {
+      let compiledList = list.name + ':\n';
+      for(let i in list.todos){
+        const todo = list.todos[i];
+        compiledList += todo.isDone? '☑ ' : '☐ '
+        compiledList += todo.name + '\n';
+      }
+      Share.share({
+        title: list.name,
+        text: compiledList,
+        dialogTitle: 'Share your todo list'
+      })
+    });    
   }
 }

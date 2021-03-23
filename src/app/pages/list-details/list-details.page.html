@@ -4,6 +4,9 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>{{ (list | async)?.name}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="shareTodos()"><ion-icon name="share-outline"></ion-icon></ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

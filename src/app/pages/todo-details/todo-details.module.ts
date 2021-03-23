@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { TodoDetailsPageRoutingModule } from './todo-details-routing.module';
 
 import { TodoDetailsPage } from './todo-details.page';
+import { SharePluginWeb } from '@capacitor/core';
 
 @NgModule({
   imports: [
