@@ -41,7 +41,6 @@ export class ListDetailsPage implements OnInit {
 
   checkboxChange(todo: Todo) {
     todo.isDone != todo.isDone;
-    console.log(todo);
     this.listService.updateTodo(todo, this.listId);
   }
 

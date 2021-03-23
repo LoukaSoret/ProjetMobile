@@ -13,8 +13,10 @@
 <ion-content class="ion-padding-horizontal">
   <ion-text>
     <h2>
-      {{(todo|async)?.name}}
+      <ion-checkbox [ngModel]="(todo|async).isDone" (ionChange)="checkboxChange($event)"></ion-checkbox> {{(todo|async)?.name}}
     </h2>
+  </ion-text>
+  <ion-text>
     <p>
       {{(todo|async)?.description}}
     </p>    
